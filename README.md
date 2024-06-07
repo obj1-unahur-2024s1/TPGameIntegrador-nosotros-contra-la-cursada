@@ -2,9 +2,11 @@
 
 ## Equipo de desarrollo
 
-- Alguien
-- Persona
-- etc.
+Franco Nicolas Pfahler
+Tomas
+Gabriel
+Enzo
+Valentina
 
 ## Capturas
 
