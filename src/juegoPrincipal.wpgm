@@ -1,7 +1,9 @@
 import wollok.game.*
 import juego.*
+import fondos.*
+import visuales.*
 
 program juego {
-	juego.inicio()
+	juego.iniciar()
 	game.start()
 }
