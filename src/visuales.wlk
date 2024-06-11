@@ -10,7 +10,12 @@ class ObjectoRandom {
 	
 	method puntaje() = puntajes.get(ficha)
 	method image()= imagenes.get(ficha)
-	method esUnaGema() = true
+	method esUnaFicha(){}
+	
+	method borrarse(){
+		game.removeVisual(self)
+	}
+	
 		
 }
 
@@ -18,6 +23,7 @@ class Ficha {
 	
 	method imagen()
 	method puntaje()
+	method esUnaFicha() = true
 }
 object corazon inherits Ficha {
 	
@@ -81,19 +87,16 @@ object selector{
 		if(self.puedeMoverArriba() )
 			position = position.up(1)
 	}
-	
 	method moverAbajo(){
 		if(self.puedeMoverAbajo() )
 		position = position.down(1)
 	
 	}
-
 	method moverDerecha(){
 		if( self.puedeMoverDerecha() )
 		position = position.right(1)
 	
 	}
-	
 	method moverIzquierda(){
 		if( self.puedeMoverIzquierda() )
 		position = position.left(1)
