@@ -34,40 +34,6 @@ object sonido {
     	else
     		silenciado=false
     }
-	
-
-    /*method borrarFichaIzquierda() {
-    	if(not silenciado)
-    		game.sound("gemaBorrada1.mp3").play()
-    	
-    }
-
-    method borrarFichaDerecha() {
-    	if(not silenciado)
-        game.sound("gemaBorrada2.mp3").play()
-    }
-
-    method borrarFichaArriba() {
-    	if(not silenciado)
-        game.sound("gemaBorrada3.mp3").play()
-    }
-
-    method borrarFichaAbajo() {
-    	if(not silenciado)
-        game.sound("gemaBorrada4.mp3").play()
-    }
-
-	method reiniciar(){
-		if(not silenciado)
-		game.sound("reiniciar.mp3").play()
-	}
-
-	method victoria(){
-		if(not silenciado)
-		game.sound("victoria.mp3").play()
-		
-	}*/
-	
 	// agregue (franco) esto para resolver el sonido cuando ganas o perdes.
 	method reproducirSiSePuede(){
 		if( self.estaEnPausa())
