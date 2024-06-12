@@ -18,8 +18,6 @@ object juego {
 		
 		game.title("Collect Coins")
 	
-	
-		
 		//tamaño de la ventana
 		game.cellSize(110)
 		game.width(14)
@@ -38,9 +36,17 @@ object juego {
 		keyboard.down().onPressDo{ selector.moverAbajo()}
 		keyboard.left().onPressDo{ selector.moverIzquierda()}
 		keyboard.right().onPressDo{ selector.moverDerecha()}
+		
+		keyboard.w().onPressDo{ if(selector.puedeMoverArriba()) selector.subirFicha()}
+		keyboard.a().onPressDo{ if(selector.puedeMoverIzquierda()) selector.moverIzquierdaFicha()}
+		keyboard.s().onPressDo{ if(selector.puedeMoverAbajo()) selector.bajarFicha()}
+		keyboard.d().onPressDo{ if(selector.puedeMoverDerecha()) selector.moverDerechaFicha()}
+		
+		keyboard.r().onPressDo{ self.reiniciar()}
+		
 	}
 	method AgregarObjEnPosicion(col,fila){
-		game.addVisual(new ObjectoRandom(position=game.at(col,fila)))
+		game.addVisual(new FichaRandom(position=game.at(col,fila)))
 	}
 	
 	method borrarObjEnPosicion(col, fila) {

@@ -4,7 +4,7 @@ import wollok.game.*
 object marco{
 	method image()= "tablero.png"
 	method position()= game.at(3,1)
-	method esUnaFicha(){}
+	method esUnaFicha() = false
 
 	}
 	
@@ -13,6 +13,7 @@ object fondo{
 	var image ="fondoInicio0.png"
 	method image() = image	
 	method image(unaImage){image = unaImage}
+	method esUnaFicha() = false
 	
 	method sigFondo(){
 		nFondo= 2.min(nFondo+1)

@@ -2,7 +2,7 @@ import wollok.game.*
 import juego.*
 import sonidos.*
 
-class ObjectoRandom {
+class FichaRandom {
 	
 	var property position = game.at(0,0)
 	const imagenes = [corazon.imagen(),arcoiris.imagen(),cerveza.imagen(),herradura.imagen(),moneda.imagen(),monio.imagen(),trebol.imagen()]
@@ -11,13 +11,128 @@ class ObjectoRandom {
 	
 	method puntaje() = puntajes.get(ficha)
 	method image()= imagenes.get(ficha)
-	method esUnaFicha(){}
+	method esUnaFicha() = true
 	
 	method borrarse(){
 		game.removeVisual(self)
 	}
 	
+	// intercambio De Fichas
+	method subir(){		
+		self.subirFicha()
+		game.getObjectsIn(self.position()).filter({f=> f.esUnaFicha() and f != self }).first().bajarFicha()
+	}
+	method bajar(){
+		self.bajarFicha()
+		game.getObjectsIn(self.position()).filter({f=> f.esUnaFicha() and f != self }).first().subirFicha()
+	}
+	method moverDerecha(){
+		self.derFicha()
+		game.getObjectsIn(self.position()).filter({f=> f.esUnaFicha() and f != self }).first().izqFicha()
+	}
+	method moverIzquierda(){
+		self.izqFicha()
+		game.getObjectsIn(self.position()).filter({f=> f.esUnaFicha() and f != self }).first().derFicha()
+	}	
+	
+	
+	// movimientos De Fichas	
+	method subirFicha(){position = position.up(1)}
+	method bajarFicha(){position = position.down(1)}
+	method derFicha(){position = position.right(1)}
+	method izqFicha(){position = position.left(1)}
+	//	
+	
+	method borrarMatchVerticalCuadruple(){
+		const posicionTresAbajo = self.fichaAbajo(3).position()
+		self.fichaAbajo(3).borrarse()
+		game.addVisual(new FichaRandom(position= posicionTresAbajo  ))
+		const posicionDosAbajo = self.fichaAbajo(2).position()
+		self.fichaAbajo(2).borrarse()
+		game.addVisual(new FichaRandom(position= posicionDosAbajo  ))
+		const posicionUnoAbajo = self.fichaAbajo(1).position()
+		self.fichaAbajo(1).borrarse()
+		game.addVisual(new FichaRandom(position= posicionUnoAbajo ))
+		const posicionFicha = self.position()
+		self.borrarse()
+		game.addVisual(new FichaRandom(position= posicionFicha ))	
 		
+	}
+	
+	method borrarMatchHorizontalCuadruple(){
+		const posicionTresALaDerecha = self.fichaALaDerecha(3).position()
+		self.fichaALaDerecha(3).borrarse()
+		game.addVisual(new FichaRandom(position= posicionTresALaDerecha ))
+		const posicionDosALaDerecha = self.fichaALaDerecha(2).position()
+		self.fichaALaDerecha(2).borrarse()
+		game.addVisual(new FichaRandom(position= posicionDosALaDerecha ))
+		const posicionUnaALaDerecha = self.fichaALaDerecha(1).position()
+		self.fichaALaDerecha(1).borrarse()
+		game.addVisual(new FichaRandom(position= posicionUnaALaDerecha  ))
+		const posicionFicha = self.position()
+		self.borrarse()
+		game.addVisual(new FichaRandom(position= posicionFicha  ))	
+	}
+	
+	method borrarMatchHorizontal(){
+		const posicionDosALaDerecha = self.fichaALaDerecha(2).position()
+		self.fichaALaDerecha(2).borrarse()
+		game.addVisual(new FichaRandom(position= posicionDosALaDerecha ))
+		const posicionUnaALaDerecha = self.fichaALaDerecha(1).position()
+		self.fichaALaDerecha(1).borrarse()
+		game.addVisual(new FichaRandom(position= posicionUnaALaDerecha  ))
+		const posicionFicha = self.position()
+		self.borrarse()
+		game.addVisual(new FichaRandom(position= posicionFicha  ))	
+		
+	}
+	
+	method borrarMatchVertical(){
+		const posicionDosAbajo = self.fichaAbajo(2).position()
+		self.fichaAbajo(2).borrarse()
+		game.addVisual(new FichaRandom(position= posicionDosAbajo  ))
+		const posicionUnoAbajo = self.fichaAbajo(1).position()
+		self.fichaAbajo(1).borrarse()
+		game.addVisual(new FichaRandom(position= posicionUnoAbajo ))
+		const posicionFicha = self.position()
+		self.borrarse()
+		game.addVisual(new FichaRandom(position= posicionFicha ))	
+		
+	}
+	
+	// verificarMatches 
+	method tieneMatch(){
+		return //self.tieneMatchHorizontalCuadruple() or self.tieneMatchVerticalCuadruple() 
+		self.tieneMatchVertical() or self.tieneMatchHorizontal()
+	}
+	method tieneMatchHorizontalCuadruple(){
+		return self.tieneFichasALaDerecha(3) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha() and self.ficha() == self.fichaALaDerecha(3).ficha())}
+	
+	method tieneMatchHorizontal(){
+		return self.tieneFichasALaDerecha(2) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha())
+	} 
+		
+	method tieneMatchVertical(){
+		return self.tieneFichasAbajo(2) and (self.ficha() == self.fichaAbajo(1).ficha() and self.ficha() == self.fichaAbajo(2).ficha())
+	}
+	method tieneMatchVerticalCuadruple(){
+		return self.tieneFichasAbajo(3) and (self.ficha() == self.fichaAbajo(1).ficha() and self.ficha() == self.fichaAbajo(2).ficha() and self.ficha() == self.fichaAbajo(3).ficha())}
+	//
+	
+	// verificarGemasAdyacentesssss
+	method tieneFichasALaDerecha(cantidad){
+		return game.getObjectsIn(self.position().right(cantidad)).size() >= 1
+	}
+	
+	method tieneFichasAbajo(cantidad){
+		return game.getObjectsIn(self.position().down(cantidad)).size() >= 1
+	}
+	//
+	
+	// returnDeGemasEnPosicion
+	method fichaALaDerecha(veces)= game.getObjectsIn(self.position().right(veces)).filter({f=>f.esUnaFicha()}).first()	
+	method fichaAbajo(veces)= game.getObjectsIn(self.position().down(veces)).filter({f=>f.esUnaFicha()}).first()
+	//
 }
 
 class Ficha {
@@ -82,6 +197,8 @@ object selector{
 	const maximaColumna = 10
 	const minimaFila = 1
 	const minimaColumna = 3
+	
+	method esUnaFicha() = false
 	
 	//mover Selector
 	method moverArriba(){
