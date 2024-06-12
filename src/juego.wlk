@@ -2,6 +2,7 @@ import wollok.game.*
 import fondos.*
 import visuales.*
 import fondos.*
+import sonidos.*
 
 
 object juego {
@@ -19,7 +20,7 @@ object juego {
 	
 	
 		
-		//tamanio de la ventana
+		//tamaño de la ventana
 		game.cellSize(110)
 		game.width(14)
 		game.height(10)
@@ -44,8 +45,8 @@ object juego {
 	
 	method borrarObjEnPosicion(col, fila) {
     game.getObjectsIn(game.at(col, fila))
-        .filter({ g => g.esUnaFicha() and g != selector })
-        .forEach({ g => game.removeVisual(g) })
+        .filter({ f => f.esUnaFicha() and f != selector })
+        .forEach({ f => game.removeVisual(f) })
 	}
 	method IniciarObjetosEnTablero(){
 		(3..10).forEach{x =>						
@@ -79,6 +80,15 @@ object juego {
 		self.IniciarObjetosEnTablero()
 		game.addVisual(selector)
 		menuInicio= false //cambia en modo juego y no podes ingresar a las instrucciones 
+		
+		game.addVisual(digito1)
+		game.addVisual(digito2)
+		game.addVisual(digito3)
+		game.addVisual(digito4)
+		
+		self.borrarMatchesInvisible()
+		puntos = 0
+		if(not juegoTerminado){sonido.iniciarPartida()}
 	}
 	
 	//volver al menu FALTA CORREGIR
@@ -88,6 +98,75 @@ object juego {
     	menuInicio = true
 	}
 	
+	method hayMatchEnTablero()= not self.fichasConMatch().isEmpty()
 	
+	method borrarMatches() {
+		self.fichasConMatch().forEach({ ficha =>
+			if(ficha.tieneMatchHorizontalCuadruple()){
+				puntos += ficha.puntaje() * 2
+				ficha.borrarMatchHorizontalCuadruple()}})
+		
+		self.fichasConMatch().forEach({ ficha =>
+			if(ficha.tieneMatchVerticalCuadruple()){
+				puntos += ficha.puntaje() * 2
+				ficha.borrarMatchVerticalCuadruple()}})
+				
+		self.fichasConMatch().forEach({ ficha =>
+			if(ficha.tieneMatchHorizontal()){
+				puntos += ficha.puntaje()
+				ficha.borrarMatchHorizontal()}})
+				
+		self.fichasConMatch().forEach({ ficha =>
+			if(ficha.tieneMatchVertical()){
+				puntos += ficha.puntaje()
+				ficha.borrarMatchVertical()}})
+			
+		if(self.hayMatchEnTablero()){
+			self.borrarMatchesInvisible()
+		}                         
+		
+	}
 	
+	method fichasConMatch()= self.todasLasFichas().filter({ficha => ficha.tieneMatch() })
+	
+	method borrarMatchesInvisible(){
+		self.fichasConMatch().forEach({ ficha =>
+			if(ficha.tieneMatchHorizontal()){
+				ficha.borrarMatchHorizontal()}
+			
+		})
+		self.fichasConMatch().forEach({ ficha =>
+			if(ficha.tieneMatchVertical()){
+				ficha.borrarMatchVertical()}
+			})
+		if(self.hayMatchEnTablero()){		
+			self.borrarMatchesInvisible()	
+		}
+	}
+	
+	method todasLasFichas()= game.allVisuals().filter({ficha => ficha.esUnaFicha()})
+
+	method ganar(){
+			puntos = 0
+			juegoTerminado = true
+			game.clear()
+			//fondo.image(fondo.imagenVictoria())
+			game.addVisualIn(fondo, game.at(0,0))
+			sonido.pausarSiSePuede()
+			sonido.victoria()
+			game.schedule(500,{
+				//fondo.image(fondo.imagenMenuSinHelp())
+				game.clear()	
+				self.iniciar()
+			} )
+	}
+	
+	method reiniciar(){ 
+		self.borrarTablero()
+		self.IniciarObjetosEnTablero()
+		self.borrarMatchesInvisible()
+		sonido.reiniciar()		
+	}	
+
+
 }
