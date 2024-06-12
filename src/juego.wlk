@@ -2,7 +2,7 @@ import wollok.game.*
 import fondos.*
 import visuales.*
 import fondos.*
-
+import sonidos.*
 
 object juego {
 	var puntos = 0
@@ -26,18 +26,23 @@ object juego {
 		//fondo menu
 		game.addVisualIn(fondo,game.at(0,0))
 		//iniciar modo juego
-		keyboard.enter().onPressDo{if(menuInicio){self.configurate()}}
+		keyboard.enter().onPressDo{if(menuInicio){self.configurate() sonido.reproducirSiSePuede()}}
 		// volver al menu
 		keyboard.m().onPressDo {if (!menuInicio) {self.volverAlMenu()}}	
 		//moverse en el menu
 		keyboard.num1().onPressDo{if(menuInicio){fondo.sigFondo()}}
 		keyboard.num2().onPressDo{if (menuInicio ){fondo.antFondo()}}
+		//apaga musica del juego
+		keyboard.p().onPressDo{sonido.mutear()}
+		//apaga todos los sonidos del juego
+		keyboard.o().onPressDo{sonido.silenciar()}
 		//movimientos del selector con las teclas
 		keyboard.up().onPressDo{ selector.moverArriba()}
 		keyboard.down().onPressDo{ selector.moverAbajo()}
 		keyboard.left().onPressDo{ selector.moverIzquierda()}
 		keyboard.right().onPressDo{ selector.moverDerecha()}
 	}
+	
 	method AgregarObjEnPosicion(col,fila){
 		game.addVisual(new ObjectoRandom(position=game.at(col,fila)))
 	}

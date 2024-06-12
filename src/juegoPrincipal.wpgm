@@ -2,6 +2,7 @@ import wollok.game.*
 import juego.*
 import fondos.*
 import visuales.*
+import sonidos.*
 
 program juego {
 	juego.iniciar()

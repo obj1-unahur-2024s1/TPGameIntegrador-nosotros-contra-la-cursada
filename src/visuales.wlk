@@ -27,49 +27,49 @@ class Ficha {
 }
 object corazon inherits Ficha {
 	
-	override method imagen()= "corazon.png"
+	override method imagen()= "Fichas/corazon.png"
 	
 	override method puntaje()= 55
 }
 
 object aroiris inherits Ficha {
 	
-	override method imagen()= "arcoiris.png"
+	override method imagen()= "Fichas/arcoiris.png"
 	
 	override method puntaje()= 85
 }
 
 object cerveza inherits Ficha {
 	
-	override method imagen()= "cerveza.png"
+	override method imagen()= "Fichas/cerveza.png"
 	
 	override method puntaje()= 40
 }
 
 object herradura inherits Ficha {
 	
-	override method imagen()= "herradura.png"
+	override method imagen()= "Fichas/herradura.png"
 	
 	override method puntaje()= 130
 }
 
 object moneda inherits Ficha {
 	
-	override method imagen()= "moneda.png"
+	override method imagen()= "Fichas/moneda.png"
 	
 	override method puntaje()= 100
 }
 
 object monio inherits Ficha {
 	
-	override method imagen()= "monio.png"
+	override method imagen()= "Fichas/monio.png"
 	
 	override method puntaje()= 110
 }
 
 object trebol inherits Ficha {
 	
-	override method imagen()= "trebol.png"
+	override method imagen()= "Fichas/trebol.png"
 	
 	override method puntaje()= 70
 }
