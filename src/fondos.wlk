@@ -16,7 +16,7 @@ object fondo{
 	method esUnaFicha() = false
 	
 	method sigFondo(){
-		nFondo= 2.min(nFondo+1)
+		nFondo= 1.min(nFondo+1)
 		self.image("fondoInicio"+nFondo+".png")
 	}
 	
@@ -26,5 +26,4 @@ object fondo{
 	}
 	method imagenNivel1()= "fondoTablero1.png"
 	
-	method imagenNivel2()= "fondoTablero2.png"
 }

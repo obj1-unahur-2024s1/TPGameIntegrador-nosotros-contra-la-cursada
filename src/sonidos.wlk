@@ -1,29 +1,30 @@
 import wollok.game.*
 
 object sonido {
-    const property musicaDeInicio = game.sound("musica.mp3")
-    const sonidoInicio = game.sound("inicio.mp3")
+    const property musicaDeTablero = game.sound("sonidos/musicaTablero.mp3")
+    const sonidoInicio = game.sound("sonidos/inicio.mp3")
+    const property musicaMenu = game.sound("sonidos/musicaMenu.mp3")
     
     var silenciado = false
     
     var musica = true
    
-    method fichaIncorrecta() {
+    method malMovimiento() {
     	if(not silenciado)
-    	game.sound("fichaIncorrecta.mp3").play()
+    		game.sound("sonidos/error.mpeg").play()
     }
 
     override method initialize(){
     	if(not silenciado)
-        musicaDeInicio.shouldLoop(true)
-        musicaDeInicio.volume(0.1)
-        musicaDeInicio.play()
+        	musicaDeTablero.shouldLoop(true)
+        	musicaDeTablero.volume(0.1)
+        	musicaDeTablero.play()
     }
 
     method iniciarPartida() {
     	if(not silenciado)
-        sonidoInicio.volume(0.03)
-        sonidoInicio.play()
+        	sonidoInicio.volume(0.03)
+        	sonidoInicio.play()
     }
     
     method silenciar(){
@@ -32,7 +33,6 @@ object sonido {
     	else
     		silenciado=false
     }
-	
 
     method borrarFicha() {
     	if(not silenciado)
@@ -42,26 +42,26 @@ object sonido {
 
 	method reiniciar(){
 		if(not silenciado)
-		game.sound("reiniciar.mp3").play()
+			game.sound("reiniciar.mp3").play()
 	}
 
 	method victoria(){
 		if(not silenciado)
-		game.sound("victoria.mp3").play()
+			game.sound("victoria.mp3").play()
 		
 	}
-	
+
 	method reproducirSiSePuede(){
 		if( self.estaEnPausa())
-			musicaDeInicio.resume()
+			musicaDeTablero.resume()
 	}
 	method pausarSiSePuede(){
 		if(! self.estaEnPausa())
-			musicaDeInicio.pause()
+			musicaDeTablero.pause()
 		
 	}
 	
-	method estaEnPausa() = musicaDeInicio.paused()
+	method estaEnPausa() = musicaDeTablero.paused()
 	
 	method mutear(){
 		if(musica){
@@ -71,6 +71,5 @@ object sonido {
 	    	musica=true
 	    	self.reproducirSiSePuede()
 	    }
-    	
 	}
 }
