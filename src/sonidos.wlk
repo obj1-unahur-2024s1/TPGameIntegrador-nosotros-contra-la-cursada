@@ -36,25 +36,33 @@ object sonido {
 
     method borrarFicha() {
     	if(not silenciado)
-    		game.sound("fichaBorrada.mp3").play()
+    		game.sound("match.mpeg").play()
     	
     }
 
 	method reiniciar(){
 		if(not silenciado)
-			game.sound("reiniciar.mp3").play()
+		game.sound("reinicio.mp3").play()
 	}
 
-	method victoria(){
+	method nivelSuperado(){
 		if(not silenciado)
-			game.sound("victoria.mp3").play()
-		
+			game.sound("nivelSuperado.mp3").play()
 	}
 
+
+	method finDelJuego(){
+		if(not silenciado){
+			game.sound("finDelJuego.mp3").play()
+		}
+	}
+	
+	
 	method reproducirSiSePuede(){
 		if( self.estaEnPausa())
 			musicaDeTablero.resume()
 	}
+	
 	method pausarSiSePuede(){
 		if(! self.estaEnPausa())
 			musicaDeTablero.pause()

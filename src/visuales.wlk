@@ -102,8 +102,7 @@ class FichaRandom {
 	
 	// verificarMatches 
 	method tieneMatch(){
-		return //self.tieneMatchHorizontalCuadruple() or self.tieneMatchVerticalCuadruple() 
-		self.tieneMatchVertical() or self.tieneMatchHorizontal()
+		return self.tieneMatchVertical() or self.tieneMatchHorizontal()
 	}
 	method tieneMatchHorizontalCuadruple(){
 		return self.tieneFichasALaDerecha(3) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha() and self.ficha() == self.fichaALaDerecha(3).ficha())}
@@ -111,17 +110,28 @@ class FichaRandom {
 	method tieneMatchHorizontal(){
 		return self.tieneFichasALaDerecha(2) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha())
 	} 
+	
+	method tieneMatchHorizontalCuadrupleA(){
+		return self.tieneFichasALaDerechaUnaArriba(3) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha() and self.ficha() == self.fichaALaDerecha(3).ficha())}
+	
+	method tieneMatchHorizontala(){
+		return self.tieneFichasALaDerechaUnaArriba(2) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha())
+	} 
 		
 	method tieneMatchVertical(){
 		return self.tieneFichasAbajo(2) and (self.ficha() == self.fichaAbajo(1).ficha() and self.ficha() == self.fichaAbajo(2).ficha())
 	}
 	method tieneMatchVerticalCuadruple(){
 		return self.tieneFichasAbajo(3) and (self.ficha() == self.fichaAbajo(1).ficha() and self.ficha() == self.fichaAbajo(2).ficha() and self.ficha() == self.fichaAbajo(3).ficha())}
-	//
 	
-	// verificarGemasAdyacentesssss
+	
+	// verificarFichasAdyacentes
 	method tieneFichasALaDerecha(cantidad){
 		return game.getObjectsIn(self.position().right(cantidad)).size() >= 1
+	}
+	
+	method tieneFichasALaDerechaUnaArriba(cantidad){
+		return game.getObjectsIn(self.position().right(cantidad).up(1)).size() >= 1
 	}
 	
 	method tieneFichasAbajo(cantidad){
@@ -234,7 +244,7 @@ object selector{
             sonido.borrarFicha() 
         }
         else{
-            sonido.fichaIncorrecta()
+            sonido.malMovimiento()
             self.fichaActual().bajar()
             position = position.down(1)
         }})
@@ -248,7 +258,7 @@ object selector{
             sonido.borrarFicha()
         }
         else{
-            sonido.fichaIncorrecta()
+            sonido.malMovimiento()
             self.fichaActual().subir()
             position = position.up(1)
         }})
@@ -262,7 +272,7 @@ object selector{
             sonido.borrarFicha()
         }
         else{
-            sonido.fichaIncorrecta()
+            sonido.malMovimiento()
             self.fichaActual().moverIzquierda()
             position = position.left(1)
         }})
@@ -276,7 +286,7 @@ object selector{
             sonido.borrarFicha()
         }
         else{
-            sonido.fichaIncorrecta()
+            sonido.malMovimiento()
             self.fichaActual().moverDerecha()
             position = position.right(1)
         }})
@@ -316,6 +326,18 @@ object digito4 inherits Digito{
 	method valorD4()= juego.puntos() % 10
 	override method position() = game.at(8,9)
 	override method image() = listaNumeros.get(self.valorD4()).image()
+}
+
+object mov1 inherits Digito{
+	method valorD1()= (juego.movimientos() % 100).div(10)
+	override method position() = game.at(1,9)
+	override method image() = listaNumeros.get(self.valorD1()).image()
+}
+
+object mov2 inherits Digito{
+	method valorD2()= juego.movimientos() % 10
+	override method position() = game.at(2,9)
+	override method image() = listaNumeros.get(self.valorD2()).image()
 }
 
 object num0{
