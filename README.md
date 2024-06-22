@@ -16,16 +16,16 @@ Valentina Daniela Bertinat
 
 Collect Coins es un juego de combinaciones al estilo de Candy Crush, protagonizado por Carlos. El objetivo del juego es recolectar puntos haciendo combinaciones con las monedas del tablero y avanzar a través de tres niveles. Una vez que completes los tres niveles, ganarás el juego.
 
-Movimientos y Acciones:
+## Movimientos y Acciones:
 Mover a Carlos: Utiliza las flechas del teclado para mover a Carlos por el tablero.
 Combinar monedas: Utiliza las teclas ASDW para combinar monedas en el tablero.
 
-Puntaje:
+## Puntaje:
 Combinar 3 monedas otorga 1 punto.
 Combinar 4 monedas otorga 2 puntos.
 Combinar 5 monedas otorga 3 puntos.
 
-Teclas especiales:
+## Teclas especiales:
 Mutear la música: Presiona la tecla P para mutear la música.
 Mutear los sonidos: Presiona la tecla O para mutear los sonidos.
 Reiniciar el tablero: Presiona la tecla R para reiniciar el tablero.
