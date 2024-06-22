@@ -12,7 +12,7 @@ Valentina Daniela Bertinat
 
 (agregar)
 
-Reglas de Juego / Instrucciones
+## Reglas de Juego / Instrucciones
 
 **Collect Coins** es un juego de combinaciones al estilo de Candy Crush, protagonizado por Carlos. El objetivo del juego es recolectar puntos haciendo combinaciones con las monedas del tablero y avanzar a través de tres niveles. Una vez que completes los tres niveles, ganarás el juego.
 
