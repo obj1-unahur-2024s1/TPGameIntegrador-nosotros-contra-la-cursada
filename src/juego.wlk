@@ -252,16 +252,12 @@ object juego {
 		//numeros de puntuacion
 		game.addVisual(digito1)
 		game.addVisual(digito2)
-		game.addVisual(digito3)
-		game.addVisual(digito4)
 	}
 	
 	method borrarPuntuacion(){
 		//numeros de puntuacion
 		game.removeVisual(digito1)
     	game.removeVisual(digito2)
-    	game.removeVisual(digito3)
-    	game.removeVisual(digito4)
 	}
 	
 	method nivelSuperado(){

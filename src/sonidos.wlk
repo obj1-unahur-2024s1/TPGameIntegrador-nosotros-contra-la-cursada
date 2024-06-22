@@ -11,7 +11,7 @@ object sonido {
    
     method malMovimiento() {
     	if(not silenciado)
-    		game.sound("sonidos/error.mpeg").play()
+    		game.sound("sonidos/error.mp3").play()
     }
 
     override method initialize(){
@@ -36,7 +36,7 @@ object sonido {
 
     method borrarFicha() {
     	if(not silenciado)
-    		game.sound("match.mpeg").play()
+    		game.sound("sonidos/match.mp3").play()
     	
     }
 

@@ -250,26 +250,14 @@ class Digito{
 }
 
 object digito1 inherits Digito{
-	method valorD1() = juego.monedas().div(1000)
-	override method position() = game.at(5,9)
-	override method image() = listaNumeros.get(self.valorD1()).image()
-}
-
-object digito2 inherits Digito{
-	method valorD2() = (juego.monedas() % 1000).div(100)
-	override method position() = game.at(6,9)
-	override method image() = listaNumeros.get(self.valorD2()).image()
-}
-
-object digito3 inherits Digito{
 	method valorD3() = (juego.monedas() % 100).div(10)
-	override method position() = game.at(7,9)
+	override method position() = game.at(6,9)
 	override method image() = listaNumeros.get(self.valorD3()).image()
 }
 
-object digito4 inherits Digito{
+object digito2 inherits Digito{
 	method valorD4()= juego.monedas() % 10
-	override method position() = game.at(8,9)
+	override method position() = game.at(7,9)
 	override method image() = listaNumeros.get(self.valorD4()).image()
 }
 
