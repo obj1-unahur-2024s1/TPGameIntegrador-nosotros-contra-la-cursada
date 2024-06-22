@@ -7,9 +7,7 @@ class FichaRandom {
 	var property position = game.at(0,0)
 	const imagenes = [corazon.imagen(),arcoiris.imagen(),cerveza.imagen(),herradura.imagen(),moneda.imagen(),monio.imagen(),trebol.imagen()]
 	const property ficha = 0.randomUpTo(7).truncate(0)
-	const property puntajes= [corazon.puntaje(), arcoiris.puntaje(),cerveza.puntaje(),herradura.puntaje(),moneda.puntaje(),monio.puntaje(),trebol.puntaje()]
 	
-	method puntaje() = puntajes.get(ficha)
 	method image()= imagenes.get(ficha)
 	method esUnaFicha() = true
 	
@@ -43,95 +41,78 @@ class FichaRandom {
 	method izqFicha(){position = position.left(1)}
 	//	
 	
+	// BORRAR MATCHS POR TIPO
+	method borrarMatchVerticalQuintuple(){
+		self.borrarMatchVerticalCuadruple()
+		self.fichaAbajo(4).borrarse()
+		game.addVisual(new FichaRandom(position = game.at(self.position().x(), self.position().y()-4)))
+	}
+	
 	method borrarMatchVerticalCuadruple(){
-		const posicionTresAbajo = self.fichaAbajo(3).position()
+		self.borrarMatchVertical()
 		self.fichaAbajo(3).borrarse()
-		game.addVisual(new FichaRandom(position= posicionTresAbajo  ))
-		const posicionDosAbajo = self.fichaAbajo(2).position()
-		self.fichaAbajo(2).borrarse()
-		game.addVisual(new FichaRandom(position= posicionDosAbajo  ))
-		const posicionUnoAbajo = self.fichaAbajo(1).position()
-		self.fichaAbajo(1).borrarse()
-		game.addVisual(new FichaRandom(position= posicionUnoAbajo ))
-		const posicionFicha = self.position()
-		self.borrarse()
-		game.addVisual(new FichaRandom(position= posicionFicha ))	
-		
-	}
-	
-	method borrarMatchHorizontalCuadruple(){
-		const posicionTresALaDerecha = self.fichaALaDerecha(3).position()
-		self.fichaALaDerecha(3).borrarse()
-		game.addVisual(new FichaRandom(position= posicionTresALaDerecha ))
-		const posicionDosALaDerecha = self.fichaALaDerecha(2).position()
-		self.fichaALaDerecha(2).borrarse()
-		game.addVisual(new FichaRandom(position= posicionDosALaDerecha ))
-		const posicionUnaALaDerecha = self.fichaALaDerecha(1).position()
-		self.fichaALaDerecha(1).borrarse()
-		game.addVisual(new FichaRandom(position= posicionUnaALaDerecha  ))
-		const posicionFicha = self.position()
-		self.borrarse()
-		game.addVisual(new FichaRandom(position= posicionFicha  ))	
-	}
-	
-	method borrarMatchHorizontal(){
-		const posicionDosALaDerecha = self.fichaALaDerecha(2).position()
-		self.fichaALaDerecha(2).borrarse()
-		game.addVisual(new FichaRandom(position= posicionDosALaDerecha ))
-		const posicionUnaALaDerecha = self.fichaALaDerecha(1).position()
-		self.fichaALaDerecha(1).borrarse()
-		game.addVisual(new FichaRandom(position= posicionUnaALaDerecha  ))
-		const posicionFicha = self.position()
-		self.borrarse()
-		game.addVisual(new FichaRandom(position= posicionFicha  ))	
-		
+		game.addVisual(new FichaRandom(position = game.at(self.position().x(), self.position().y()-3)))
 	}
 	
 	method borrarMatchVertical(){
-		const posicionDosAbajo = self.fichaAbajo(2).position()
-		self.fichaAbajo(2).borrarse()
-		game.addVisual(new FichaRandom(position= posicionDosAbajo  ))
-		const posicionUnoAbajo = self.fichaAbajo(1).position()
-		self.fichaAbajo(1).borrarse()
-		game.addVisual(new FichaRandom(position= posicionUnoAbajo ))
-		const posicionFicha = self.position()
 		self.borrarse()
-		game.addVisual(new FichaRandom(position= posicionFicha ))	
+		self.fichaAbajo(1).borrarse()
+		self.fichaAbajo(2).borrarse()
+		game.addVisual(new FichaRandom(position = self.position()))
+		game.addVisual(new FichaRandom(position = game.at(self.position().x(), self.position().y()-1)))
+		game.addVisual(new FichaRandom(position = game.at(self.position().x(), self.position().y()-2)))	
+	}
+	
+	method borrarMatchHorizontalQuintuple(){
+		self.borrarMatchHorizontalCuadruple()
+		self.fichaALaDerecha(4).borrarse()	
+		game.addVisual(new FichaRandom(position = game.at(self.position().x()+4, self.position().y())))	
+	}
+	
+	method borrarMatchHorizontalCuadruple(){
+		self.borrarMatchHorizontal()
+		self.fichaALaDerecha(3).borrarse()	
+		game.addVisual(new FichaRandom(position = game.at(self.position().x()+3, self.position().y())))	
+	}
+	
+	method borrarMatchHorizontal(){
+		self.borrarse()
+		self.fichaALaDerecha(1).borrarse()
+		self.fichaALaDerecha(2).borrarse()
+		game.addVisual(new FichaRandom(position = self.position()))
+		game.addVisual(new FichaRandom(position = game.at(self.position().x()+1, self.position().y())))
+		game.addVisual(new FichaRandom(position = game.at(self.position().x()+2, self.position().y())))	
 		
 	}
 	
-	// verificarMatches 
+	
+	// VERIFICA QUE TIPO ES MATCH ES
 	method tieneMatch(){
 		return self.tieneMatchVertical() or self.tieneMatchHorizontal()
 	}
+	
+	method tieneMatchHorizontalQuintuple(){
+		return self.tieneFichasALaDerecha(4) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha() and self.ficha() == self.fichaALaDerecha(3).ficha()) and self.ficha() == self.fichaALaDerecha(4).ficha()}
+	
 	method tieneMatchHorizontalCuadruple(){
 		return self.tieneFichasALaDerecha(3) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha() and self.ficha() == self.fichaALaDerecha(3).ficha())}
 	
 	method tieneMatchHorizontal(){
-		return self.tieneFichasALaDerecha(2) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha())
-	} 
+		return self.tieneFichasALaDerecha(2) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha())} 
 	
-	method tieneMatchHorizontalCuadrupleA(){
-		return self.tieneFichasALaDerechaUnaArriba(3) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha() and self.ficha() == self.fichaALaDerecha(3).ficha())}
+	method tieneMatchVerticalQuintuple(){
+		return self.tieneFichasAbajo(4) and (self.ficha() == self.fichaAbajo(1).ficha() and self.ficha() == self.fichaAbajo(2).ficha() and self.ficha() == self.fichaAbajo(3).ficha() and self.ficha() == self.fichaAbajo(4).ficha())}
 	
-	method tieneMatchHorizontala(){
-		return self.tieneFichasALaDerechaUnaArriba(2) and (self.ficha() == self.fichaALaDerecha(1).ficha() and self.ficha() == self.fichaALaDerecha(2).ficha())
-	} 
-		
-	method tieneMatchVertical(){
-		return self.tieneFichasAbajo(2) and (self.ficha() == self.fichaAbajo(1).ficha() and self.ficha() == self.fichaAbajo(2).ficha())
-	}
 	method tieneMatchVerticalCuadruple(){
 		return self.tieneFichasAbajo(3) and (self.ficha() == self.fichaAbajo(1).ficha() and self.ficha() == self.fichaAbajo(2).ficha() and self.ficha() == self.fichaAbajo(3).ficha())}
 	
+	method tieneMatchVertical(){
+		return self.tieneFichasAbajo(2) and (self.ficha() == self.fichaAbajo(1).ficha() and self.ficha() == self.fichaAbajo(2).ficha())
+	}
 	
 	// verificarFichasAdyacentes
 	method tieneFichasALaDerecha(cantidad){
 		return game.getObjectsIn(self.position().right(cantidad)).size() >= 1
-	}
-	
-	method tieneFichasALaDerechaUnaArriba(cantidad){
-		return game.getObjectsIn(self.position().right(cantidad).up(1)).size() >= 1
 	}
 	
 	method tieneFichasAbajo(cantidad){
@@ -147,58 +128,22 @@ class FichaRandom {
 
 class Ficha {
 	method imagen()
-	method puntaje()
 	method esUnaFicha() = true
 }
 
-object corazon inherits Ficha {
-	
-	override method imagen()= "Fichas/corazon.png"
-	
-	override method puntaje()= 80
-}
+object corazon inherits Ficha {override method imagen()= "Fichas/corazon.png"}
 
-object arcoiris inherits Ficha {
-	
-	override method imagen()= "Fichas/arcoiris.png"
-	
-	override method puntaje()= 60
-}
+object arcoiris inherits Ficha {override method imagen()= "Fichas/arcoiris.png"}
 
-object cerveza inherits Ficha {
-	
-	override method imagen()= "Fichas/cerveza.png"
-	
-	override method puntaje()= 250
-}
+object cerveza inherits Ficha {override method imagen()= "Fichas/cerveza.png"}
 
-object herradura inherits Ficha {
-	
-	override method imagen()= "Fichas/herradura.png"
-	
-	override method puntaje()= 50
-}
+object herradura inherits Ficha {override method imagen()= "Fichas/herradura.png"}
 
-object moneda inherits Ficha {
-	
-	override method imagen()= "Fichas/moneda.png"
-	
-	override method puntaje()= 500
-}
+object moneda inherits Ficha {override method imagen()= "Fichas/moneda.png"}
 
-object monio inherits Ficha {
-	
-	override method imagen()= "Fichas/monio.png"
-	
-	override method puntaje()= 100
-}
+object monio inherits Ficha {override method imagen()= "Fichas/monio.png"}
 
-object trebol inherits Ficha {
-	
-	override method imagen()= "Fichas/trebol.png"
-	
-	override method puntaje()= 150
-}
+object trebol inherits Ficha {override method imagen()= "Fichas/trebol.png"}
 
 object selector{
 	var property image = "selector.png"
@@ -305,25 +250,25 @@ class Digito{
 }
 
 object digito1 inherits Digito{
-	method valorD1() = juego.puntos().div(1000)
+	method valorD1() = juego.monedas().div(1000)
 	override method position() = game.at(5,9)
 	override method image() = listaNumeros.get(self.valorD1()).image()
 }
 
 object digito2 inherits Digito{
-	method valorD2() = (juego.puntos() % 1000).div(100)
+	method valorD2() = (juego.monedas() % 1000).div(100)
 	override method position() = game.at(6,9)
 	override method image() = listaNumeros.get(self.valorD2()).image()
 }
 
 object digito3 inherits Digito{
-	method valorD3() = (juego.puntos() % 100).div(10)
+	method valorD3() = (juego.monedas() % 100).div(10)
 	override method position() = game.at(7,9)
 	override method image() = listaNumeros.get(self.valorD3()).image()
 }
 
 object digito4 inherits Digito{
-	method valorD4()= juego.puntos() % 10
+	method valorD4()= juego.monedas() % 10
 	override method position() = game.at(8,9)
 	override method image() = listaNumeros.get(self.valorD4()).image()
 }

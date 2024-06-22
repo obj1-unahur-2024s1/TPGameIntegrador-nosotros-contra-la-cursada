@@ -5,7 +5,7 @@ import fondos.*
 import sonidos.*
 
 object juego {
-	var puntos = 0
+	var monedas = 0
 	var nivel1Terminado = false
 	var	nivel2Terminado = false
 	var nivel3Terminado = false
@@ -13,13 +13,9 @@ object juego {
 	var menuInicio = true
 	var movimientos = 100
 
-	method puntos(){
-		return puntos
-	}
+	method monedas() = monedas
 	
-	method movimientos(){
-		return movimientos
-	}
+	method movimientos() = movimientos
 	
 	method iniciar(){
 		
@@ -38,7 +34,7 @@ object juego {
 		
 		//condiciones para terminar el juego
 		game.onTick(250, "nivel 1", {
-			(if(puntos > 1500 and movimientos > 0){
+			(if(monedas > 5 and movimientos > 0){
 				nivel1Terminado = true
 				self.nivel2()
 			}
@@ -46,17 +42,17 @@ object juego {
 		
 		
 		game.onTick(250, "nivel 2", {
-			(if(puntos > 2500 and movimientos > 0){
+			(if(monedas > 10 and movimientos > 0){
 				nivel2Terminado = true
 				self.nivel3()
 			}
 		)})
 		
 		game.onTick(250, "nivel 3", {
-			(if(puntos > 3500 and movimientos > 0){
+			(if(monedas > 15 and movimientos > 0){
 				nivel3Terminado = true
 				self.ganar()
-			} else if(puntos < 3500 and movimientos == 0){
+			} else if(monedas < 15 and movimientos == 0){
 				self.gameOver()
 			}
 		)})
@@ -88,25 +84,25 @@ object juego {
 		
 		//movimientos de fichas
 		keyboard.w().onPressDo{ 
-			if(selector.puedeMoverArriba() /*and self.hayMatchUp()*/){
+			if(selector.puedeMoverArriba()){
 				selector.subirFicha() 
 				movimientos--
 			}
 		}
 		keyboard.a().onPressDo{ 
-			if(selector.puedeMoverIzquierda() /*and self.hayMatchLeft()*/){
+			if(selector.puedeMoverIzquierda()){
 				selector.moverIzquierdaFicha() 
 				movimientos--
 			}
 		}
 		keyboard.s().onPressDo{ 
-			if(selector.puedeMoverAbajo() /*and self.hayMatchUp()*/){
+			if(selector.puedeMoverAbajo()){
 				selector.bajarFicha() 
 				movimientos--
 			}
 		}
 		keyboard.d().onPressDo{ 
-			if(selector.puedeMoverDerecha() /*and self.hayMatchUp()*/){
+			if(selector.puedeMoverDerecha()){
 				selector.moverDerechaFicha() 
 				movimientos--
 			}
@@ -115,106 +111,6 @@ object juego {
 		keyboard.r().onPressDo{ self.reiniciar()}
 	}
 	
-	
-	/* 
-	method fichaActual() = game.getObjectsIn(selector.position()).filter({f=>f.esUnaFicha()}).first()
-	
-	method fichaEn(x,y) = game.getObjectsIn(game.at(x,y)).filter({f=>f.esUnaFicha()}).first()
-	
-	method hayMatchs(){
-		return (self.hayMatchUp() or
-				self.hayMatchDown() or
-				self.hayMatchRight() or
-				self.hayMatchLeft()
-		)
-	}
-	
-	method hayMatchUp(){
-		return ( self.hayMatchArriba("derecha") or
-				self.hayMatchArriba("izquierda") or
-				self.hayMatchArriba("arriba")
-		)
-	}
-	
-	
-	method hayMatchArriba(direccion){
-		const x = selector.position().x()
-		const y = selector.position().y()
-		
-		if(direccion == "derecha"){
-			return (self.fichaEn(x+1,y+1).ficha() == self.fichaActual().ficha() and self.fichaEn(x+2,y+1).ficha() == self.fichaActual().ficha())
-		} else if (direccion == "izquierda"){
-			return (self.fichaEn(x-1,y+1).ficha() == self.fichaActual().ficha() and self.fichaEn(x-2,y+1).ficha() == self.fichaActual().ficha())
-		} else if (direccion == "arriba"){
-			return (self.fichaEn(x,y+2).ficha() == self.fichaActual().ficha() and self.fichaEn(x,y+3).ficha() == self.fichaActual().ficha())
-		} 
-		return null
-	}
-	
-	method hayMatchDown(){
-		return ( self.hayMatchAbajo("derecha") or
-				self.hayMatchAbajo("izquierda") or
-				self.hayMatchAbajo("abajo") 
-		)
-	}
-	
-	method hayMatchAbajo(direccion){
-		const x = selector.position().x()
-		const y = selector.position().y()
-		
-		if(direccion == "derecha"){
-			return (self.fichaEn(x+1,y-1).ficha() == self.fichaActual().ficha() and self.fichaEn(x+2,y-1).ficha() == self.fichaActual().ficha())
-		} else if (direccion == "izquierda"){
-			return (self.fichaEn(x-1,y-1).ficha() == self.fichaActual().ficha() and self.fichaEn(x-2,y-1).ficha() == self.fichaActual().ficha())
-		} else if (direccion == "abajo"){
-			return (self.fichaEn(x,y-2).ficha() == self.fichaActual().ficha() and self.fichaEn(x,y-3).ficha() == self.fichaActual().ficha())
-		} 
-		return null
-	}
-	
-	method hayMatchRight(){
-		return ( self.hayMatchDerecha("derecha") or
-				self.hayMatchDerecha("abajo") or
-				self.hayMatchDerecha("arriba") 
-		)
-	}
-	
-	
-	method hayMatchDerecha(direccion){
-		const x = selector.position().x()
-		const y = selector.position().y()
-		
-		if(direccion == "derecha"){
-			return (self.fichaEn(x+2,y).ficha() == self.fichaActual().ficha() and self.fichaEn(x+3,y).ficha() == self.fichaActual().ficha())
-		} else if (direccion == "abajo"){
-			return (self.fichaEn(x+1,y-1).ficha() == self.fichaActual().ficha() and self.fichaEn(x+1,y-2).ficha() == self.fichaActual().ficha())
-		} else if (direccion == "arriba"){
-			return (self.fichaEn(x+1,y+1).ficha() == self.fichaActual().ficha() and self.fichaEn(x+1,y+2).ficha() == self.fichaActual().ficha())	
-		} 
-		return null
-	}
-	
-	method hayMatchLeft(){
-		return ( self.hayMatchIzquierda("arriba") or
-				self.hayMatchIzquierda("izquierda") or
-				self.hayMatchIzquierda("abajo") 
-		)
-	}
-	
-	method hayMatchIzquierda(direccion){
-		const x = selector.position().x()
-		const y = selector.position().y()
-		
-		if(direccion == "arriba"){	
-			return (self.fichaEn(x-1,y+1).ficha() == self.fichaActual().ficha() and self.fichaEn(x-1,y+2).ficha() == self.fichaActual().ficha())
-		} else if (direccion == "izquierda"){
-			return (self.fichaEn(x-2,y).ficha() == self.fichaActual().ficha() and self.fichaEn(x-3,y).ficha() == self.fichaActual().ficha())
-		} else if (direccion == "abajo"){
-			return (self.fichaEn(x-1,y-1).ficha() == self.fichaActual().ficha() and self.fichaEn(x-1,y-2).ficha() == self.fichaActual().ficha())
-		}
-		return null
-	}
-	*/
 	method agregarFichaEnPosicion(col,fila){
 		game.addVisual(new FichaRandom(position=game.at(col,fila)))
 	}
@@ -264,25 +160,37 @@ object juego {
 	
 	method hayMatchEnTablero()= not self.fichasConMatch().isEmpty()
 	
+	method sumarMonedas(cant){monedas += cant}
+	
 	method borrarMatches() {
 		self.fichasConMatch().forEach({ ficha =>
+			if(ficha.tieneMatchHorizontalQuintuple()){
+				if(ficha.ficha()==4){self.sumarMonedas(3)}
+				ficha.borrarMatchHorizontalQuintuple()}})
+				
+		self.fichasConMatch().forEach({ ficha =>
+			if(ficha.tieneMatchVerticalQuintuple()){
+				if(ficha.ficha()==4){self.sumarMonedas(3)}
+				ficha.borrarMatchVerticalQuintuple()}})
+		
+		self.fichasConMatch().forEach({ ficha =>
 			if(ficha.tieneMatchHorizontalCuadruple()){
-				puntos += ficha.puntaje() * 2
+				if(ficha.ficha()==4){self.sumarMonedas(2)}
 				ficha.borrarMatchHorizontalCuadruple()}})
 		
 		self.fichasConMatch().forEach({ ficha =>
 			if(ficha.tieneMatchVerticalCuadruple()){
-				puntos += ficha.puntaje() * 2
+				if(ficha.ficha()==4){self.sumarMonedas(2)}
 				ficha.borrarMatchVerticalCuadruple()}})
 				
 		self.fichasConMatch().forEach({ ficha =>
 			if(ficha.tieneMatchHorizontal()){
-				puntos += ficha.puntaje()
+				if(ficha.ficha()==4){self.sumarMonedas(1)}
 				ficha.borrarMatchHorizontal()}})
 				
 		self.fichasConMatch().forEach({ ficha =>
 			if(ficha.tieneMatchVertical()){
-				puntos += ficha.puntaje()
+				if(ficha.ficha()==4){self.sumarMonedas(1)}
 				ficha.borrarMatchVertical()}})
 			
 		if(self.hayMatchEnTablero()){
@@ -321,7 +229,7 @@ object juego {
 		self.agregarMovimientos()
 		self.borrarMatchesInvisible()
 		
-		puntos = 0
+		monedas = 0
 		movimientos = 30
 		
 		if(not juegoTerminado){sonido.iniciarPartida()}
@@ -366,7 +274,7 @@ object juego {
 	method nivel2(){
 		game.removeTickEvent("nivel 1")
 		if(nivel1Terminado){
-			puntos = 0
+			monedas = 0
 			movimientos = 25
 			fondo.image(fondo.imagenNivel2())
 			game.addVisualIn(marco, game.at(3,1))
@@ -387,7 +295,7 @@ object juego {
 	method nivel3(){
 		game.removeTickEvent("nivel 2")
 		if(nivel2Terminado){
-			puntos = 0
+			monedas = 0
 			movimientos = 20
 			fondo.image(fondo.imagenNivel3())
 			game.addVisualIn(marco, game.at(3,1))
@@ -407,7 +315,7 @@ object juego {
 	
 	method ganar(){
 		game.removeTickEvent("nivel 3")
-		puntos = 0
+		monedas = 0
 		game.clear()
 		fondo.image(fondo.finDelJuego())
 		game.addVisualIn(fondo, game.at(0,0))
@@ -423,7 +331,7 @@ object juego {
 	
 	method gameOver(){
 		game.removeTickEvent("nivel 3")
-		puntos = 0
+		monedas = 0
 		game.clear()
 		fondo.image(fondo.finDelJuego())
 		game.addVisualIn(fondo, game.at(0,0))
