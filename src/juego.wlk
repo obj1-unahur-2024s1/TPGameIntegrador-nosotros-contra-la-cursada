@@ -34,7 +34,7 @@ object juego {
 		
 		//condiciones para terminar el juego
 		game.onTick(250, "nivel 1", {
-			(if(monedas > 5 and movimientos > 0){
+			(if(monedas >= 5 and movimientos > 0){
 				nivel1Terminado = true
 				self.nivel2()
 			}
@@ -42,14 +42,14 @@ object juego {
 		
 		
 		game.onTick(250, "nivel 2", {
-			(if(monedas > 10 and movimientos > 0){
+			(if(monedas >= 10 and movimientos > 0){
 				nivel2Terminado = true
 				self.nivel3()
 			}
 		)})
 		
 		game.onTick(250, "nivel 3", {
-			(if(monedas > 15 and movimientos > 0){
+			(if(monedas >= 15 and movimientos > 0){
 				nivel3Terminado = true
 				self.ganar()
 			} else if(monedas < 15 and movimientos == 0){
