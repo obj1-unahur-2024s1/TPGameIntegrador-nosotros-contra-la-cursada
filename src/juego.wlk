@@ -37,20 +37,23 @@ object juego {
 		
 		//condiciones para terminar el juego
 		game.onTick(250, "nivel1", {
-			(if(monedas >= 5 and movimientos > 0){
+			(if(monedas >= 1 and movimientos > 0){
 				nivel1Terminado = true
-				self.nivel2()
+				self.pasasteNivel()
+				game.removeTickEvent("nivel1")
+				game.schedule(5000, {self.nivel2()})
 			} else if(monedas < 5 and movimientos == 0){
 				juegoTerminado = true
 				self.gameOver()
 			}
 		)})
 		
-		
 		game.onTick(250, "nivel2", {
-			(if(monedas >= 10 and movimientos > 0){
+			(if(monedas >= 2 and movimientos > 0){
 				nivel2Terminado = true
-				self.nivel3()
+				self.pasasteNivel()
+				game.removeTickEvent("nivel2")
+				game.schedule(5000, {self.nivel3()})
 			} else if(monedas < 10 and movimientos == 0){
 				juegoTerminado = true
 				self.gameOver()
@@ -58,7 +61,7 @@ object juego {
 		)})
 		
 		game.onTick(250, "nivel3", {
-			(if(monedas >= 15 and movimientos > 0){
+			(if(monedas >= 3 and movimientos > 0){
 				nivel3Terminado = true
 				juegoTerminado = true
 				self.ganar()
@@ -70,6 +73,12 @@ object juego {
 		
 		game.start()
 		
+	}
+	
+	method pasasteNivel(){
+		self.quitarObjetos()
+		fondo.image(fondo.nivelSuperado())
+		sonido.nivelSuperado()
 	}
 	
 	method configurarTeclas(){
@@ -167,10 +176,17 @@ object juego {
     	menuInicio = true
 	}
 	
+	method iniciarObjetos(){
+		game.addVisualIn(marco, game.at(3,1))
+		game.addVisual(selector)
+		self.agregarPuntuacion()
+		self.agregarMovimientos()
+	}
+	
 	method quitarObjetos(){
 		self.borrarTablero()
-    	game.removeVisual(marco)
-    	game.removeVisual(selector)
+    	if(game.hasVisual(marco)){game.removeVisual(marco)}
+    	if(game.hasVisual(selector)){game.removeVisual(selector)}
     	self.borrarPuntuacion()
     	self.borrarMovimientos()
 	}
@@ -239,13 +255,10 @@ object juego {
 	method nivel1(){
 		
 		fondo.image(fondo.imagenNivel1())
-		game.addVisualIn(marco, game.at(3,1))
+		self.iniciarObjetos()
 		self.iniciarFichasEnTablero()
-		game.addVisual(selector)
 		menuInicio= false 
 			
-		self.agregarPuntuacion()
-		self.agregarMovimientos()
 		self.borrarMatchesInvisible()
 		
 		monedas = 0
@@ -260,8 +273,8 @@ object juego {
 	
 	method borrarMovimientos(){
 		//cantidad de movimientos restantes
-		game.removeVisual(mov1)
-		game.removeVisual(mov2)
+		if(game.hasVisual(mov1)){game.removeVisual(mov1)}
+		if(game.hasVisual(mov2)){game.removeVisual(mov2)}
 	}
 	
 	method agregarPuntuacion(){
@@ -272,8 +285,8 @@ object juego {
 	
 	method borrarPuntuacion(){
 		//numeros de puntuacion
-		game.removeVisual(digito1)
-    	game.removeVisual(digito2)
+		if(game.hasVisual(digito1)){game.removeVisual(digito1)}
+    	if(game.hasVisual(digito2)){game.removeVisual(digito2)}
 	}
 	
 	method nivelSuperado(){
@@ -283,10 +296,10 @@ object juego {
 	}
 
 	method nivel2(){
-		game.removeTickEvent("nivel1")
 		if(nivel1Terminado){
 			monedas = 0
 			movimientos = 30
+			self.iniciarObjetos()
 			fondo.image(fondo.imagenNivel2())
 			self.borrarTablero()
 			self.iniciarFichasEnTablero()
@@ -298,10 +311,10 @@ object juego {
 	}
 	
 	method nivel3(){
-		game.removeTickEvent("nivel2")
 		if(nivel2Terminado){
 			monedas = 0
 			movimientos = 30
+			self.iniciarObjetos()
 			fondo.image(fondo.imagenNivel3())
 			self.borrarTablero()
 			self.iniciarFichasEnTablero()
