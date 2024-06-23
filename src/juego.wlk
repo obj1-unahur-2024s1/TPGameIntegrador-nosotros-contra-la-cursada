@@ -33,29 +33,16 @@ object juego {
 		self.configurarTeclas()
 		
 		//inicializar sonido
-		sonido.musicaMenu()       	       	
-		
-		//condiciones para terminar el juego
-		
-		
-		
-		
-		
+		sonido.musicaMenu()
 		
 		game.start()
 		
 	}
 	
-	method pasasteNivel(){
-		self.quitarObjetos()
-		fondo.image(fondo.nivelSuperado())
-		sonido.nivelSuperado()
-	}
-	
 	method configurarTeclas(){
 		
 		//iniciar modo juego
-		keyboard.enter().onPressDo{if(menuInicio){self.nivel1() sonido.sonido().stop() sonido.musicaDeFondo()}}
+		keyboard.enter().onPressDo{if(menuInicio){self.nivel1() sonido.musicaDeFondo().pause() sonido.musicaNivel()}}
 		
 		// volver al menu
 		keyboard.m().onPressDo {if (!menuInicio) {self.volverAlMenu()}}	
@@ -251,23 +238,21 @@ object juego {
     	if(game.hasVisual(digito2)){game.removeVisual(digito2)}
 	}
 	
-	method nivelSuperado(){
+	method pasasteNivel(){
+		self.quitarObjetos()
 		fondo.image(fondo.nivelSuperado())
-		game.addVisualIn(fondo, game.at(0,0))
 		sonido.nivelSuperado()
 	}
 	
 	method nivel1(){
-		
+		monedas = 0
+		movimientos = 10
 		fondo.image(fondo.imagenNivel1())
 		self.iniciarObjetos()
 		self.iniciarFichasEnTablero()
 		menuInicio= false 
 			
 		self.borrarMatchesInvisible()
-		
-		monedas = 0
-		movimientos = 2
 		
 		game.onTick(250, "nivel1", {
 			(if(monedas >= 1 and movimientos > 0){
@@ -293,7 +278,6 @@ object juego {
 			self.iniciarFichasEnTablero()
 			menuInicio= false 
 			self.borrarMatchesInvisible()
-			
 			
 			game.onTick(250, "nivel2", {
 			(if(monedas >= 2 and movimientos > 0){
