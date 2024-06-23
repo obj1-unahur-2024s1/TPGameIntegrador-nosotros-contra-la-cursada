@@ -1,30 +1,59 @@
 import wollok.game.*
 
 object sonido {
-    const property musicaDeTablero = game.sound("sonidos/musicaTablero.mp3")
-    const sonidoInicio = game.sound("sonidos/inicio.mp3")
-    const property musicaMenu = game.sound("sonidos/musicaMenu.mp3")
+	
+	var sonido 
+	
+	//nombres de archivos de audio
+    const musicaDeTablero = "musicaTablero.mp3"
+    const sonidoInicio = "inicio.mp3"
+    const musicaMenu = "musicaMenu.mp3"
+    const error = "error.mp3"
+    const match = "match.mp3"
+    const reinicio = "reinicio.mp3"
+    const finDelJuego = "finDelJuego.mp3"
+    const ganaste = "ganaste.mp3" // falta agregar este archivo
+    
+    var musicaDeFondo 
     
     var silenciado = false
     
     var musica = true
+     
+    method sonido() = sonido 
+     
+    method sonido(tipo){
+   	 sonido = self.guardarSonido(tipo)
+    }
+    
+    method guardarSonido(tipo){
+    	return game.sound("sonidos/"+tipo)
+    }
    
     method malMovimiento() {
-    	if(not silenciado)
-    		game.sound("sonidos/error.mp3").play()
+    	if(not silenciado){
+    		self.sonido(error)
+    		sonido.play()
+    	}
     }
 
-    override method initialize(){
+    method musicaDeFondo(){
     	if(not silenciado)
-        	musicaDeTablero.shouldLoop(true)
-        	musicaDeTablero.volume(0.1)
-        	musicaDeTablero.play()
+    		musicaDeFondo = self.guardarSonido(musicaDeTablero)
+        	musicaDeFondo.shouldLoop(true)
+        	musicaDeFondo.volume(0.1)
+        	musicaDeFondo.play()
+        	self.sonido(sonidoInicio)
     }
-
-    method iniciarPartida() {
-    	if(not silenciado)
-        	sonidoInicio.volume(0.03)
-        	sonidoInicio.play()
+    
+    method musica() = musicaDeFondo
+    
+    
+    method musicaMenu(){
+    	self.sonido(musicaMenu)
+    	sonido.shouldLoop(true)
+       	game.schedule(200,{sonido.play() sonido.volume(0.2)})
+        	
     }
     
     method silenciar(){
@@ -36,13 +65,17 @@ object sonido {
 
     method borrarFicha() {
     	if(not silenciado)
-    		game.sound("sonidos/match.mp3").play()
+    		
+    		self.sonido(match)
+    		sonido.play()
     	
     }
 
 	method reiniciar(){
 		if(not silenciado)
-		game.sound("reinicio.mp3").play()
+			
+			self.sonido(reinicio)
+			sonido.play()
 	}
 
 	method nivelSuperado(){
@@ -50,26 +83,34 @@ object sonido {
 			game.sound("nivelSuperado.mp3").play()
 	}
 
-
 	method finDelJuego(){
 		if(not silenciado){
-			game.sound("finDelJuego.mp3").play()
+			self.sonido(finDelJuego)
+			sonido.volume(0.5)
+			sonido.play()
+		}
+	}
+	
+	method ganaste(){
+		if(not silenciado){
+			self.sonido(ganaste)
+			sonido.volume(0.5)
+			sonido.play()
 		}
 	}
 	
 	
 	method reproducirSiSePuede(){
 		if( self.estaEnPausa())
-			musicaDeTablero.resume()
+			sonido.resume()
 	}
 	
 	method pausarSiSePuede(){
 		if(! self.estaEnPausa())
-			musicaDeTablero.pause()
-		
+			sonido.pause()
 	}
 	
-	method estaEnPausa() = musicaDeTablero.paused()
+	method estaEnPausa() = sonido.paused()
 	
 	method mutear(){
 		if(musica){

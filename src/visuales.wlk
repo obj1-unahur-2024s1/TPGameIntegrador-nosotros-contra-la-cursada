@@ -118,12 +118,11 @@ class FichaRandom {
 	method tieneFichasAbajo(cantidad){
 		return game.getObjectsIn(self.position().down(cantidad)).size() >= 1
 	}
-	//
-	
+		
 	// returnDeGemasEnPosicion
 	method fichaALaDerecha(veces)= game.getObjectsIn(self.position().right(veces)).filter({f=>f.esUnaFicha()}).first()	
 	method fichaAbajo(veces)= game.getObjectsIn(self.position().down(veces)).filter({f=>f.esUnaFicha()}).first()
-	//
+	
 }
 
 class Ficha {
@@ -163,17 +162,14 @@ object selector{
 	method moverAbajo(){
 		if(self.puedeMoverAbajo() )
 		position = position.down(1)
-	
 	}
 	method moverDerecha(){
 		if( self.puedeMoverDerecha() )
 		position = position.right(1)
-	
 	}
 	method moverIzquierda(){
 		if( self.puedeMoverIzquierda() )
 		position = position.left(1)
-	
 	}
 
 	method puedeMoverArriba()= position.y() < maximaFila
@@ -250,26 +246,26 @@ class Digito{
 }
 
 object digito1 inherits Digito{
-	method valorD3() = (juego.monedas() % 100).div(10)
-	override method position() = game.at(6,9)
-	override method image() = listaNumeros.get(self.valorD3()).image()
+	method valorD1() = (juego.monedas() % 100).div(10)
+	override method position() = game.at(9,9)
+	override method image() = listaNumeros.get(self.valorD1()).image()
 }
 
 object digito2 inherits Digito{
-	method valorD4()= juego.monedas() % 10
-	override method position() = game.at(7,9)
-	override method image() = listaNumeros.get(self.valorD4()).image()
+	method valorD2()= juego.monedas() % 10
+	override method position() = game.at(10,9)
+	override method image() = listaNumeros.get(self.valorD2()).image()
 }
 
 object mov1 inherits Digito{
 	method valorD1()= (juego.movimientos() % 100).div(10)
-	override method position() = game.at(1,9)
+	override method position() = game.at(5,9)
 	override method image() = listaNumeros.get(self.valorD1()).image()
 }
 
 object mov2 inherits Digito{
 	method valorD2()= juego.movimientos() % 10
-	override method position() = game.at(2,9)
+	override method position() = game.at(6,9)
 	override method image() = listaNumeros.get(self.valorD2()).image()
 }
 

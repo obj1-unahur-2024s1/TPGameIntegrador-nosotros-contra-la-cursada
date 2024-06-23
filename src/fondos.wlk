@@ -42,6 +42,8 @@ object fondo{
 	
 	method finDelJuego() = "finDelJuego.png"
 	
+	method ganaste() = "ganaste.png" //falta este fondo
+	
 	
 	
 	

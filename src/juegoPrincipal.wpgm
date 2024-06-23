@@ -6,5 +6,4 @@ import sonidos.*
 
 program juego {
 	juego.iniciar()
-	game.start()
 }

@@ -11,7 +11,7 @@ object juego {
 	var nivel3Terminado = false
 	var juegoTerminado = false
 	var menuInicio = true
-	var movimientos = 100
+	var movimientos = 30
 
 	method monedas() = monedas
 	
@@ -32,36 +32,50 @@ object juego {
 		//configurar teclas
 		self.configurarTeclas()
 		
+		//inicializar sonido
+		sonido.musicaMenu()       	
+       	
+		
 		//condiciones para terminar el juego
-		game.onTick(250, "nivel 1", {
-			(if(monedas > 5 and movimientos > 0){
+		game.onTick(250, "nivel1", {
+			(if(monedas >= 5 and movimientos > 0){
 				nivel1Terminado = true
 				self.nivel2()
-			}
-		)})
-		
-		
-		game.onTick(250, "nivel 2", {
-			(if(monedas > 10 and movimientos > 0){
-				nivel2Terminado = true
-				self.nivel3()
-			}
-		)})
-		
-		game.onTick(250, "nivel 3", {
-			(if(monedas > 15 and movimientos > 0){
-				nivel3Terminado = true
-				self.ganar()
-			} else if(monedas < 15 and movimientos == 0){
+			} else if(monedas < 5 and movimientos == 0){
+				juegoTerminado = true
 				self.gameOver()
 			}
 		)})
+		
+		
+		game.onTick(250, "nivel2", {
+			(if(monedas >= 10 and movimientos > 0){
+				nivel2Terminado = true
+				self.nivel3()
+			} else if(monedas < 10 and movimientos == 0){
+				juegoTerminado = true
+				self.gameOver()
+			}
+		)})
+		
+		game.onTick(250, "nivel3", {
+			(if(monedas >= 15 and movimientos > 0){
+				nivel3Terminado = true
+				self.ganar()
+			} else if(monedas < 15 and movimientos == 0){
+				juegoTerminado = true
+				self.gameOver()
+			}
+		)})
+		
+		game.start()
+		
 	}
 	
 	method configurarTeclas(){
 		
 		//iniciar modo juego
-		keyboard.enter().onPressDo{if(menuInicio){self.nivel1() sonido.reproducirSiSePuede()}}
+		keyboard.enter().onPressDo{if(menuInicio){self.nivel1() sonido.sonido().stop() sonido.musicaDeFondo()}}
 		
 		// volver al menu
 		keyboard.m().onPressDo {if (!menuInicio) {self.volverAlMenu()}}	
@@ -148,14 +162,18 @@ object juego {
 	}
 	
 	method volverAlMenu() {
-    	self.borrarTablero()
     	fondo.image("fondoInicio0.png")
-    	game.removeVisual(marco)
-    	game.removeVisual(selector)
-    	self.borrarPuntuacion()
-    	self.borrarMovimientos()
+    	self.quitarObjetos()
     	sonido.pausarSiSePuede()
     	menuInicio = true
+	}
+	
+	method quitarObjetos(){
+		self.borrarTablero()
+    	//game.removeVisual(marco)
+    	//game.removeVisual(selector)
+    	self.borrarPuntuacion()
+    	self.borrarMovimientos()
 	}
 	
 	method hayMatchEnTablero()= not self.fichasConMatch().isEmpty()
@@ -231,9 +249,6 @@ object juego {
 		
 		monedas = 0
 		movimientos = 30
-		
-		if(not juegoTerminado){sonido.iniciarPartida()}
-		
 	}
 	
 	method agregarMovimientos(){
@@ -268,74 +283,64 @@ object juego {
 	}
 
 	method nivel2(){
-		game.removeTickEvent("nivel 1")
+		game.removeTickEvent("nivel1")
 		if(nivel1Terminado){
 			monedas = 0
-			movimientos = 25
+			movimientos = 30
 			fondo.image(fondo.imagenNivel2())
-			game.addVisualIn(marco, game.at(3,1))
+			self.borrarTablero()
 			self.iniciarFichasEnTablero()
-			game.addVisual(selector)
 			menuInicio= false 
-				
-			self.agregarPuntuacion()
-			self.agregarMovimientos()
 			self.borrarMatchesInvisible()
 			
-			if(not juegoTerminado){sonido.iniciarPartida()}
 		}
-		
 		
 	}
 	
 	method nivel3(){
-		game.removeTickEvent("nivel 2")
+		game.removeTickEvent("nivel2")
 		if(nivel2Terminado){
 			monedas = 0
-			movimientos = 20
+			movimientos = 30
 			fondo.image(fondo.imagenNivel3())
-			game.addVisualIn(marco, game.at(3,1))
+			self.borrarTablero()
 			self.iniciarFichasEnTablero()
-			game.addVisual(selector)
 			menuInicio= false 
-				
-			self.agregarPuntuacion()
-			self.agregarMovimientos()
 			self.borrarMatchesInvisible()
-			
-			if(not juegoTerminado){sonido.iniciarPartida()}
 		}
-		
 		
 	}
 	
 	method ganar(){
-		game.removeTickEvent("nivel 3")
+		game.removeTickEvent("nivel3")
 		monedas = 0
 		game.clear()
-		fondo.image(fondo.finDelJuego())
+		fondo.image(fondo.ganaste()) //falta este fondo
 		game.addVisualIn(fondo, game.at(0,0))
-		sonido.pausarSiSePuede()
-		sonido.finDelJuego()
-		game.schedule(500,{
-			
-			self.volverAlMenu()	
-			
-			self.iniciar()
-		} )
+		if(juegoTerminado){
+			sonido.pausarSiSePuede()
+			sonido.ganaste() // falta este sonido
+		}
+		
 	}
 	
 	method gameOver(){
-		game.removeTickEvent("nivel 3")
 		monedas = 0
 		game.clear()
 		fondo.image(fondo.finDelJuego())
 		game.addVisualIn(fondo, game.at(0,0))
-		sonido.pausarSiSePuede()
-		sonido.finDelJuego()
+		if(juegoTerminado){
+			sonido.pausarSiSePuede()
+			sonido.finDelJuego()
+		}
+		nivel1Terminado = false
+		nivel2Terminado = false
+		nivel3Terminado = false
+		juegoTerminado = false
 	}
 	
 	method reiniciar(){ 
+		movimientos--
 		self.borrarTablero()
 		self.iniciarFichasEnTablero()
 		self.borrarMatchesInvisible()
