@@ -33,8 +33,7 @@ object juego {
 		self.configurarTeclas()
 		
 		//inicializar sonido
-		sonido.musicaMenu()       	
-       	
+		sonido.musicaMenu()       	       	
 		
 		//condiciones para terminar el juego
 		game.onTick(250, "nivel1", {
@@ -164,14 +163,13 @@ object juego {
 	method volverAlMenu() {
     	fondo.image("fondoInicio0.png")
     	self.quitarObjetos()
-    	sonido.pausarSiSePuede()
     	menuInicio = true
 	}
 	
 	method quitarObjetos(){
 		self.borrarTablero()
-    	//game.removeVisual(marco)
-    	//game.removeVisual(selector)
+    	game.removeVisual(marco)
+    	game.removeVisual(selector)
     	self.borrarPuntuacion()
     	self.borrarMovimientos()
 	}
@@ -278,7 +276,6 @@ object juego {
 	method nivelSuperado(){
 		fondo.image(fondo.nivelSuperado())
 		game.addVisualIn(fondo, game.at(0,0))
-		sonido.pausarSiSePuede()
 		sonido.nivelSuperado()
 	}
 
@@ -315,11 +312,10 @@ object juego {
 		game.removeTickEvent("nivel3")
 		monedas = 0
 		game.clear()
-		fondo.image(fondo.ganaste()) //falta este fondo
+		fondo.image(fondo.ganaste())
 		game.addVisualIn(fondo, game.at(0,0))
 		if(juegoTerminado){
-			sonido.pausarSiSePuede()
-			sonido.ganaste() // falta este sonido
+			sonido.ganaste()
 		}
 		
 	}
@@ -330,7 +326,6 @@ object juego {
 		fondo.image(fondo.finDelJuego())
 		game.addVisualIn(fondo, game.at(0,0))
 		if(juegoTerminado){
-			sonido.pausarSiSePuede()
 			sonido.finDelJuego()
 		}
 		nivel1Terminado = false

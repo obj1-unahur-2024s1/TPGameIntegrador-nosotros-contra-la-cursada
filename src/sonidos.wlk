@@ -12,7 +12,8 @@ object sonido {
     const match = "match.mp3"
     const reinicio = "reinicio.mp3"
     const finDelJuego = "finDelJuego.mp3"
-    const ganaste = "ganaste.mp3" // falta agregar este archivo
+    const ganaste = "ganaste.mp3" 
+    const nivelSuperado = "nivelSuperado.mp3"
     
     var musicaDeFondo 
     
@@ -65,10 +66,8 @@ object sonido {
 
     method borrarFicha() {
     	if(not silenciado)
-    		
     		self.sonido(match)
     		sonido.play()
-    	
     }
 
 	method reiniciar(){
@@ -80,7 +79,9 @@ object sonido {
 
 	method nivelSuperado(){
 		if(not silenciado)
-			game.sound("nivelSuperado.mp3").play()
+			self.sonido(nivelSuperado)
+			sonido.volume(0.5)
+			sonido.play()
 	}
 
 	method finDelJuego(){
@@ -99,26 +100,13 @@ object sonido {
 		}
 	}
 	
-	
-	method reproducirSiSePuede(){
-		if( self.estaEnPausa())
-			sonido.resume()
-	}
-	
-	method pausarSiSePuede(){
-		if(! self.estaEnPausa())
-			sonido.pause()
-	}
-	
-	method estaEnPausa() = sonido.paused()
-	
 	method mutear(){
 		if(musica){
 	    	musica=false
-	    	self.pausarSiSePuede()
+	    	musicaDeFondo.volume(0.0)
 	    }else{
 	    	musica=true
-	    	self.reproducirSiSePuede()
+	   		musicaDeFondo.volume(0.5)
 	    }
 	}
 }
