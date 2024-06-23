@@ -100,25 +100,25 @@ object juego {
 		keyboard.w().onPressDo{ 
 			if(selector.puedeMoverArriba()){
 				selector.subirFicha() 
-				movimientos--
+				self.restarMovimientos(1)
 			}
 		}
 		keyboard.a().onPressDo{ 
 			if(selector.puedeMoverIzquierda()){
 				selector.moverIzquierdaFicha() 
-				movimientos--
+				self.restarMovimientos(1)
 			}
 		}
 		keyboard.s().onPressDo{ 
 			if(selector.puedeMoverAbajo()){
 				selector.bajarFicha() 
-				movimientos--
+				self.restarMovimientos(1)
 			}
 		}
 		keyboard.d().onPressDo{ 
 			if(selector.puedeMoverDerecha()){
 				selector.moverDerechaFicha() 
-				movimientos--
+				self.restarMovimientos(1)
 			}
 		}
 		//nuevo tablero
@@ -178,6 +178,8 @@ object juego {
 	method hayMatchEnTablero()= not self.fichasConMatch().isEmpty()
 	
 	method sumarMonedas(cant){monedas += cant}
+	
+	method restarMovimientos(cant){movimientos -= cant}
 	
 	method borrarMatches() {
 		self.fichasConMatch().forEach({ ficha =>
@@ -334,7 +336,9 @@ object juego {
 	}
 	
 	method reiniciar(){ 
-		movimientos--
+		if(!nivel1Terminado){self.restarMovimientos(1)}
+		else if(nivel1Terminado and !nivel2Terminado){self.restarMovimientos(2)}
+		else if(nivel2Terminado and !nivel3Terminado){self.restarMovimientos(3)}
 		self.borrarTablero()
 		self.iniciarFichasEnTablero()
 		self.borrarMatchesInvisible()
