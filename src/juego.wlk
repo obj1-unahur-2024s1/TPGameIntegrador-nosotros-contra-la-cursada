@@ -60,6 +60,7 @@ object juego {
 		game.onTick(250, "nivel3", {
 			(if(monedas >= 15 and movimientos > 0){
 				nivel3Terminado = true
+				juegoTerminado = true
 				self.ganar()
 			} else if(monedas < 15 and movimientos == 0){
 				juegoTerminado = true
@@ -309,7 +310,6 @@ object juego {
 	}
 	
 	method ganar(){
-		game.removeTickEvent("nivel3")
 		monedas = 0
 		game.clear()
 		fondo.image(fondo.ganaste())
@@ -317,7 +317,6 @@ object juego {
 		if(juegoTerminado){
 			sonido.ganaste()
 		}
-		
 	}
 	
 	method gameOver(){

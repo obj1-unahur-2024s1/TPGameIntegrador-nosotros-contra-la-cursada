@@ -87,6 +87,7 @@ object sonido {
 	method finDelJuego(){
 		if(not silenciado){
 			self.sonido(finDelJuego)
+			musicaDeFondo.volume(0.0)
 			sonido.volume(0.5)
 			sonido.play()
 		}
@@ -95,6 +96,7 @@ object sonido {
 	method ganaste(){
 		if(not silenciado){
 			self.sonido(ganaste)
+			musicaDeFondo.volume(0.0)
 			sonido.volume(0.5)
 			sonido.play()
 		}
