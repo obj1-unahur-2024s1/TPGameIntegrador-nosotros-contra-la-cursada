@@ -40,7 +40,7 @@ object fondo{
 	
 	method imagenNivel3() = "fondoTablero3.png"
 	
-	method finDelJuego() = "finDelJuego.png"
+	method finDelJuego() = "gameOver.png"
 	
 	method ganaste() = "ganaste.jpg"
 	

@@ -36,40 +36,11 @@ object juego {
 		sonido.musicaMenu()       	       	
 		
 		//condiciones para terminar el juego
-		game.onTick(250, "nivel1", {
-			(if(monedas >= 1 and movimientos > 0){
-				nivel1Terminado = true
-				self.pasasteNivel()
-				game.removeTickEvent("nivel1")
-				game.schedule(5000, {self.nivel2()})
-			} else if(monedas < 5 and movimientos == 0){
-				juegoTerminado = true
-				self.gameOver()
-			}
-		)})
 		
-		game.onTick(250, "nivel2", {
-			(if(monedas >= 2 and movimientos > 0){
-				nivel2Terminado = true
-				self.pasasteNivel()
-				game.removeTickEvent("nivel2")
-				game.schedule(5000, {self.nivel3()})
-			} else if(monedas < 10 and movimientos == 0){
-				juegoTerminado = true
-				self.gameOver()
-			}
-		)})
 		
-		game.onTick(250, "nivel3", {
-			(if(monedas >= 3 and movimientos > 0){
-				nivel3Terminado = true
-				juegoTerminado = true
-				self.ganar()
-			} else if(monedas < 15 and movimientos == 0){
-				juegoTerminado = true
-				self.gameOver()
-			}
-		)})
+		
+		
+		
 		
 		game.start()
 		
@@ -171,9 +142,13 @@ object juego {
 	}
 	
 	method volverAlMenu() {
+		sonido.musicaMenu()
     	fondo.image("fondoInicio0.png")
     	self.quitarObjetos()
     	menuInicio = true
+    	nivel1Terminado = false
+		nivel2Terminado = false
+		nivel3Terminado = false
 	}
 	
 	method iniciarObjetos(){
@@ -251,19 +226,6 @@ object juego {
 	}
 	
 	method todasLasFichas()= game.allVisuals().filter({ficha => ficha.esUnaFicha()})
-
-	method nivel1(){
-		
-		fondo.image(fondo.imagenNivel1())
-		self.iniciarObjetos()
-		self.iniciarFichasEnTablero()
-		menuInicio= false 
-			
-		self.borrarMatchesInvisible()
-		
-		monedas = 0
-		movimientos = 30
-	}
 	
 	method agregarMovimientos(){
 		//cantidad de movimientos restantes
@@ -294,11 +256,37 @@ object juego {
 		game.addVisualIn(fondo, game.at(0,0))
 		sonido.nivelSuperado()
 	}
+	
+	method nivel1(){
+		
+		fondo.image(fondo.imagenNivel1())
+		self.iniciarObjetos()
+		self.iniciarFichasEnTablero()
+		menuInicio= false 
+			
+		self.borrarMatchesInvisible()
+		
+		monedas = 0
+		movimientos = 2
+		
+		game.onTick(250, "nivel1", {
+			(if(monedas >= 1 and movimientos > 0){
+				nivel1Terminado = true
+				self.pasasteNivel()
+				game.removeTickEvent("nivel1")
+				game.schedule(5000, {self.nivel2()})
+			} else if(monedas < 5 and movimientos == 0){
+				juegoTerminado = true
+				game.removeTickEvent("nivel1")
+				game.schedule(5000, {self.gameOver()})
+			}
+		)})
+	}
 
 	method nivel2(){
 		if(nivel1Terminado){
 			monedas = 0
-			movimientos = 30
+			movimientos = 2
 			self.iniciarObjetos()
 			fondo.image(fondo.imagenNivel2())
 			self.borrarTablero()
@@ -306,6 +294,19 @@ object juego {
 			menuInicio= false 
 			self.borrarMatchesInvisible()
 			
+			
+			game.onTick(250, "nivel2", {
+			(if(monedas >= 2 and movimientos > 0){
+				nivel2Terminado = true
+				self.pasasteNivel()
+				game.removeTickEvent("nivel2")
+				game.schedule(5000, {self.nivel3()})
+			} else if(monedas < 10 and movimientos == 0){
+				juegoTerminado = true
+				game.removeTickEvent("nivel2")
+				game.schedule(5000, {self.gameOver()})
+			}
+		)})
 		}
 		
 	}
@@ -320,6 +321,19 @@ object juego {
 			self.iniciarFichasEnTablero()
 			menuInicio= false 
 			self.borrarMatchesInvisible()
+			
+			game.onTick(250, "nivel3", {
+			(if(monedas >= 3 and movimientos > 0){
+				nivel3Terminado = true
+				juegoTerminado = true
+				game.removeTickEvent("nivel3")
+				game.schedule(5000, {self.ganar()})
+			} else if(monedas < 15 and movimientos == 0){
+				juegoTerminado = true
+				game.removeTickEvent("nivel3")
+				game.schedule(5000, {self.gameOver()})
+			}
+		)})
 		}
 		
 	}
@@ -336,9 +350,8 @@ object juego {
 	
 	method gameOver(){
 		monedas = 0
-		game.clear()
+		self.quitarObjetos()
 		fondo.image(fondo.finDelJuego())
-		game.addVisualIn(fondo, game.at(0,0))
 		if(juegoTerminado){
 			sonido.finDelJuego()
 		}
@@ -346,6 +359,7 @@ object juego {
 		nivel2Terminado = false
 		nivel3Terminado = false
 		juegoTerminado = false
+		
 	}
 	
 	method reiniciar(){ 
