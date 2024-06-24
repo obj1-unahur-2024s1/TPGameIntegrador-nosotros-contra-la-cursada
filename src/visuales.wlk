@@ -12,7 +12,7 @@ class FichaRandom {
 	method esUnaFicha() = true
 	
 	method borrarse(){
-		game.removeVisual(self)
+		if(game.hasVisual(self)){game.removeVisual(self)}
 	}
 	
 	// intercambio De Fichas
@@ -156,20 +156,16 @@ object selector{
 	
 	//mover Selector
 	method moverArriba(){
-		if(self.puedeMoverArriba() )
-			position = position.up(1)
+		if(self.puedeMoverArriba()){position = position.up(1)}else{position = game.at(self.position().x(), minimaFila)}
 	}
 	method moverAbajo(){
-		if(self.puedeMoverAbajo() )
-		position = position.down(1)
+		if(self.puedeMoverAbajo()){position = position.down(1)}else{position = game.at(self.position().x(), maximaFila)}
 	}
 	method moverDerecha(){
-		if( self.puedeMoverDerecha() )
-		position = position.right(1)
+		if(self.puedeMoverDerecha()){position = position.right(1)}else{position = game.at(minimaColumna, self.position().y())}
 	}
 	method moverIzquierda(){
-		if( self.puedeMoverIzquierda() )
-		position = position.left(1)
+		if(self.puedeMoverIzquierda()){position = position.left(1)}else{position = game.at(maximaColumna, self.position().y())}
 	}
 
 	method puedeMoverArriba()= position.y() < maximaFila
