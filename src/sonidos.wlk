@@ -51,6 +51,7 @@ object sonido {
     method musicaNivel(){
         musicaDeFondo = game.sound(musicaDeTablero)
         musicaDeFondo.play()
+        musicaDeFondo.shouldLoop(true)
         musicaDeFondo.volume(if(musica){0.2}else{0.0})
     }
     

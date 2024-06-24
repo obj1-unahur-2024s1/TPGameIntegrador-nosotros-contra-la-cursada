@@ -256,7 +256,7 @@ object juego {
 		self.borrarMatchesInvisible()
 		
 		game.onTick(250, "nivel1", {
-			(if(monedas >= 5 and movimientos > 0){
+			(if(monedas >= 5 and movimientos >= 0){
 				nivel1Terminado = true
 				self.pasasteNivel()
 				game.removeTickEvent("nivel1")
@@ -281,7 +281,7 @@ object juego {
 			self.borrarMatchesInvisible()
 			
 			game.onTick(250, "nivel2", {
-			(if(monedas >= 10 and movimientos > 0){
+			(if(monedas >= 10 and movimientos >= 0){
 				nivel2Terminado = true
 				self.pasasteNivel()
 				game.removeTickEvent("nivel2")
@@ -308,7 +308,7 @@ object juego {
 			self.borrarMatchesInvisible()
 			
 			game.onTick(250, "nivel3", {
-			(if(monedas >= 15 and movimientos > 0){
+			(if(monedas >= 15 and movimientos >= 0){
 				nivel3Terminado = true
 				juegoTerminado = true
 				game.removeTickEvent("nivel3")
