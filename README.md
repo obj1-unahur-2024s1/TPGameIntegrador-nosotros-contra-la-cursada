@@ -10,7 +10,8 @@ Valentina Daniela Bertinat
 
 ## Capturas
 
-(agregar)
+![Partida](./assets/partida.jpg)
+![Instrucciones](./assets/instrucciones.jpg)
 
 ## Reglas de Juego / Instrucciones
 
@@ -34,6 +35,6 @@ Volver al menú principal: Presiona la tecla M para volver al menú principal.
 
 ## Otros
 
-- Programacion Orientada en Objectos Comision 1, Universidad Nacional de la Hurlingham
+- Programacion Orientada en Objetos Comision 1, Universidad Nacional de la Hurlingham
 - Versión de wollok 3.0.0
-- Una vez terminado, no tenemos problemas en que el repositorio sea público / queremos manternerlo privado
+- Una vez terminado, no tenemos problemas en que el repositorio sea público
