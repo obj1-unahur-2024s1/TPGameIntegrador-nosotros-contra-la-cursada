@@ -348,9 +348,9 @@ object juego {
 	}
 	
 	method reiniciar(){ 
-		if(!nivel1Terminado){self.restarMovimientos(1)}
-		else if(nivel1Terminado and !nivel2Terminado){if(movimientos < 2) movimientos = 0 else self.restarMovimientos(2)}
-		else if(nivel2Terminado and !nivel3Terminado){if(movimientos < 3) movimientos = 0 else self.restarMovimientos(3)}
+		if(!nivel1Terminado){if(movimientos < 1) self.gameOver() else self.restarMovimientos(1)}
+		else if(nivel1Terminado and !nivel2Terminado){if(movimientos < 2) self.gameOver() else self.restarMovimientos(2)}
+		else if(nivel2Terminado and !nivel3Terminado){if(movimientos < 3) self.gameOver() else self.restarMovimientos(3)}
 		self.borrarTablero()
 		self.iniciarFichasEnTablero()
 		self.borrarMatchesInvisible()
