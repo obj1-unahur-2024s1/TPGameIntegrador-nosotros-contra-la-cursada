@@ -325,12 +325,15 @@ object juego {
 	
 	method ganar(){
 		monedas = 0
-		game.clear()
+		self.quitarObjetos()
 		fondo.image(fondo.ganaste())
-		game.addVisualIn(fondo, game.at(0,0))
 		if(juegoTerminado){
 			sonido.ganaste()
 		}
+		nivel1Terminado = false
+		nivel2Terminado = false
+		nivel3Terminado = false
+		juegoTerminado = false
 	}
 	
 	method gameOver(){
